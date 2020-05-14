@@ -6,6 +6,7 @@
 package fitnessab;
 
 import java.util.Scanner;
+import java.util.Random; 
 
 /**
  *
@@ -15,6 +16,7 @@ public class UI {
     Scanner scan = new Scanner(System.in);
     Logic logic = new Logic();
     boolean quit = false;
+    Random randomID = new Random();
     public void UI(){
         while(!quit){
             System.out.println("1: lägg till ny medlem\n"
