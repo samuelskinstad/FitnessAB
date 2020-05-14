@@ -45,11 +45,13 @@ public class Logic {
         addressNr = sc.nextLine();
         System.out.println("Enter your phone number");
         phoneNr = sc.nextInt();    
+        //Todo Database connection 
     }
     public void removeMember(int id){
         System.out.println("Which Member would you like to remove?");
         System.out.println("Enter Member ID");
         removeMember = sc.nextInt();
+        //TODO Database connection 
         
     }
     public boolean checkIn(int scannedCard){
@@ -69,6 +71,7 @@ public class Logic {
         startTime = sc.nextInt();
         System.out.println("Enter stop time (Example 21 for 21.00)");
         stopTime = sc.nextInt();
+        //TODO Database connection
         
     }
     public void bookCourse(){
@@ -79,6 +82,10 @@ public class Logic {
     }
     public void randomMemberID() {
         memberID = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
+       // for (id : database)
+           //boolean result = database.contains(memberID);
+           //if (result == true) 
+           //  return 
     }
     public void randomBookingNr(){
         bookingID = random.nextInt(2000000) + 2000000; //Måste loopa igenom databasen och se så det inte skapas dubletter
