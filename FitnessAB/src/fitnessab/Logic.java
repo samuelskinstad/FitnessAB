@@ -44,10 +44,8 @@ public class Logic {
     }
     public boolean checkIn(int scannedCard){
         if scannedCard == 1
-            return true 
-        return false 
-                    
-        
+            return true; 
+        return false;                     
     }
         //TODO check
   
