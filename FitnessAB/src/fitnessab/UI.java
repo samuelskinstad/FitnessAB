@@ -10,5 +10,7 @@ package fitnessab;
  * @author s_ski
  */
 public class UI {
-    
+    public void UI(){
+        System.out.println("hello");
+    }
 }
