@@ -9,9 +9,35 @@ package fitnessab;
  *
  * @author s_ski
  */
+import java.util.Scanner;
+import java.util.Random;
+
+        
 public class Logic {
+    String fName;
+    String sName;
+    int peronNr;
+    String address; 
+    String addressNr;
+    int phoneNr; 
+    Scanner sc = new Scanner();
+    Random ranMember = new Random();
+    
+    public Logic() {}
+            
     public void addMember(){
-        //TODO SQL add member
+        //Create Random number 
+        System.out.println("Enter your first name");
+        fName = sc.nextLine();
+        System.out.println("Enter your surname");
+        sName = sc.nextLine();
+        System.out.println("Enter your address");
+        address = sc.nextInt();
+        System.out.println("Enter your address number");
+        addressNr = sc.nextInt()
+                
+        
+        
     }
     public void removeMember(int id){
         //TODO remove member
@@ -27,5 +53,8 @@ public class Logic {
     }
     public void cancelCourse(){
         
+    }
+    public void randomMemberID() {
+    
     }
 }
