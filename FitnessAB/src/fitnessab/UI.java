@@ -32,9 +32,7 @@ public class UI {
                     break;
                     
                 case "2":
-                    System.out.println("MedlemsID:");
-                    int id = scan.nextInt();
-                    logic.removeMember(id);
+                    logic.removeMember();
                     break;
                     
                 case "3":
