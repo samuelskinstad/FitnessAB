@@ -10,5 +10,7 @@ package fitnessab;
  * @author s_ski
  */
 public class Logic {
-    
+    public void addMember(String namn, String eNamn, int pNr){
+        //TODO SQL add member
+    }
 }
