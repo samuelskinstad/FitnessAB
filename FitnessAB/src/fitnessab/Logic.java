@@ -59,7 +59,7 @@ public class Logic {
     }
         
   
-    public void createClass(){
+    public void createCourse(){
         //create random number
         System.out.println("Name of class?");
         className = sc.nextLine();
