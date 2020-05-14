@@ -20,27 +20,33 @@ public class UI {
     public void UI(){
         while(!quit){
             System.out.println("1: lägg till ny medlem\n"
-                    + "2: Information om medlem\n"
-                    + "3: Avsluta");
+                    + "2: Ta bort medlem\n"
+                    + "3: Skapa pass\n"
+                    + "4: Boka pass\n"
+                    + "5: Avboka pass\n"
+                    + "6: Avsluta programmet");
             String input = scan.nextLine();
             switch(input){
                 case "1":
-                    System.out.println("Namn:");
-                    String namn = scan.nextLine();
-                    System.out.println("Efternamn:");
-                    String eNamn = scan.nextLine();
-                    System.out.println("PNummer (ÅÅMMDD):");
-                    int pNr = scan.nextInt();
-                    logic.addMember(namn, eNamn, pNr);
+                    logic.addMember();
                     break;
                     
                 case "2":
                     System.out.println("MedlemsID:");
                     int id = scan.nextInt();
-                    logic.memberLookup(id);
+                    logic.removeMember(id);
                     break;
                     
                 case "3":
+                    logic.createCourse();
+                    
+                case "4":
+                    logic.bookCourse();
+                    
+                case "5":
+                    logic.cancelCourse();
+                    
+                case "6":
                     quit = true;
                     
                 default:

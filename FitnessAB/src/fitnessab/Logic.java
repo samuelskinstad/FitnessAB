@@ -10,14 +10,22 @@ package fitnessab;
  * @author s_ski
  */
 public class Logic {
-    public void addMember(String namn, String eNamn, int pNr){
+    public void addMember(){
         //TODO SQL add member
     }
-    public void memberLookup(int id){
-        //TODO view member information
-        System.out.println(id);
+    public void removeMember(int id){
+        //TODO remove member
     }
-    public void viewGym(int id){
-        //TODO view gym information
+    public void checkIn(){
+        //TODO check
+    }
+    public void createCourse(){
+        
+    }
+    public void bookCourse(){
+        
+    }
+    public void cancelCourse(){
+        
     }
 }
