@@ -31,20 +31,26 @@ public class Logic {
         fName = sc.nextLine();
         System.out.println("Enter your surname");
         sName = sc.nextLine();
-        System.out.println("Enter your address");
+        System.out.println("Enter your address name");
         address = sc.nextInt();
         System.out.println("Enter your address number");
-        addressNr = sc.nextInt()
-                
-        
-        
+        addressNr = sc.nextLine();
+        System.out.println("Enter your phone number");
+        phoneNr = sc.nextInt(); 
+            
     }
     public void removeMember(int id){
         //TODO remove member
     }
-    public void checkIn(){
-        //TODO check
+    public boolean checkIn(int scannedCard){
+        if scannedCard == 1
+            return true 
+        return false 
+                    
+        
     }
+        //TODO check
+  
     public void createCourse(){
         
     }
