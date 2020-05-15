@@ -72,12 +72,15 @@ public class DatabaseClass {
        }
     }
     
-    public void createCourse(){
+    public void createCourse(int ID, String className, int date, int startTime, int stopTime){
         try {
             Class.forName(DRIVER);
-            Connection con = DriverManager.getConnection(DB_URL);
-            Statement stmt = con.createStatement();
-//            ResultSet rs = stmt.executeQuery("insert into Class (classID, date, time, name) VALUES ('" + classID + "','" + date + "','" + time + "','" + name + "')");
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("insert into Class (classID, className, date, time, name) VALUES ('" + ID + "','" +
+                    className + "','" + date + "','" +startTime + "','" + stopTime + "')");
        } catch (Exception e) {
            // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );

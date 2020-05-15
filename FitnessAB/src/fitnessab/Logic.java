@@ -60,6 +60,7 @@ public class Logic {
         phoneNr = sc.nextInt();
         db.addMember(memberIDRandom, fName, sName, address, addressNr, mail, phoneNr);
     }
+    
     public void removeMember(){
         System.out.println("Which Member would you like to remove?");
         System.out.println("Enter Member ID");
@@ -75,7 +76,7 @@ public class Logic {
         
   
     public void createCourse(){
-        //create random number
+        randomClassID();
         System.out.println("Name of class?");
         className = sc.nextLine();
         System.out.println("Enter which date the class will be held");
@@ -84,7 +85,7 @@ public class Logic {
         startTime = sc.nextInt();
         System.out.println("Enter stop time (Example 21 for 21.00)");
         stopTime = sc.nextInt();
-        //TODO Database connection
+        db.createCourse(classID, className, date, startTime, stopTime);
         
     }
     public void bookCourse(){
@@ -107,7 +108,7 @@ public class Logic {
     }
     
     public int randomMemberID() {
-        memberIDRandom = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
+        memberIDRandom = random.nextInt(1000000) + 1000000;
         try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DB_URL);
@@ -125,12 +126,45 @@ public class Logic {
        }
         return memberIDRandom;
     }
-    public void randomBookingNr(){
-        //randomNr = random.nextInt(2000000) + 2000000; //Måste loopa igenom databasen och se så det inte skapas dubletter
-    }
-    public void randomClassID(){
-        //randomNr = random.nextInt(100) + 100; //Samma som ovan
     
+    public int randomBookingNr(){
+        bookingID = random.nextInt(2000000) + 2000000;
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select bookingID from Booking");
+            while(rs.next()){
+                if(rs.getInt("bookingID") == bookingID){
+                    randomMemberID();
+                }
+            }
+       } catch (Exception e) {
+           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+        return bookingID;
+    }
+    
+    public int randomClassID(){
+        classID = random.nextInt(3000000) + 300000;
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select classID from Class");
+            while(rs.next()){
+                if(rs.getInt("classID") == classID){
+                    randomMemberID();
+                }
+            }
+       } catch (Exception e) {
+           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+        return classID;
     }
     public void viewdata(){
         db.viewall();
