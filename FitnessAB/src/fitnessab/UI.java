@@ -44,6 +44,9 @@ public class UI {
                 case "5":
                     logic.cancelCourse();
                     
+                case "66":
+                    logic.viewdata();
+                    
                 case "6":
                     quit = true;
                     

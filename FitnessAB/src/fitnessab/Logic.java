@@ -22,25 +22,25 @@ import org.sqlite.SQLiteConfig;
         
 public class Logic {
     static Connection conn = null;
-    public static final String DB_URL = "jdbc:sqlite:C:/m.db";
+    public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
-    Scanner sc = new Scanner(System.in);
-    Random random = new Random();
-    String fName;
-    String sName;
-    int peronNr;
-    String address; 
-    String addressNr;
-    String mail;
-    int phoneNr; 
-    String className;
-    int date;
-    int startTime;
-    int stopTime;
-    int memberIDRandom;
-    int bookingID;
-    int classID;
-    int removeMember;
+    private Scanner sc = new Scanner(System.in);
+    private Random random = new Random();
+    private String fName;
+    private String sName;
+    private int peronNr;
+    private String address; 
+    private String addressNr;
+    private String mail;
+    private int phoneNr; 
+    private String className;
+    private int date;
+    private int startTime;
+    private int stopTime;
+    private int memberIDRandom;
+    private int bookingID;
+    private int classID;
+    private int removeMember;
     DatabaseClass db = new DatabaseClass();
     public Logic() {}
             
@@ -97,8 +97,10 @@ public class Logic {
         memberIDRandom = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
         try {
             Class.forName(DRIVER);
-            Connection con = DriverManager.getConnection(DB_URL);
-            Statement stmt = con.createStatement();
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select memberID from Member");
             while(rs.next()){
                 if(rs.getInt("memberID") == memberIDRandom){
@@ -108,7 +110,6 @@ public class Logic {
        } catch (Exception e) {
            // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
-           System.out.println("error");
            System.exit(0);
        }
         return memberIDRandom;
@@ -119,5 +120,8 @@ public class Logic {
     public void randomClassID(){
         classID = random.nextInt(100) + 100; //Samma som ovan
     
+    }
+    public void viewdata(){
+        db.viewall();
     }
 }
