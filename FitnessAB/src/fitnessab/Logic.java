@@ -88,18 +88,28 @@ public class Logic {
         
     }
     public void bookCourse(){
+        System.out.println("Which class would you like to participate in?");
+        className = sc.nextLine();
+        System.out.println("Which date?");
+        date = sc.nextInt();
+        //TODO Database
+        System.out.println("Confirmation: Your reservation for class: " + className + " on " + date + " has been successfully registered");
+        
         
     }
     public void cancelCourse(){
+        System.out.println("Enter Class ID");
+        classID = sc.nextInt();
+        System.out.println("Which date?");
+        date = sc.nextInt(); 
         
     }
+    
     public int randomMemberID() {
         memberIDRandom = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
         try {
             Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            conn = DriverManager.getConnection(DB_URL);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select memberID from Member");
             while(rs.next()){
@@ -115,10 +125,10 @@ public class Logic {
         return memberIDRandom;
     }
     public void randomBookingNr(){
-        bookingID = random.nextInt(2000000) + 2000000; //Måste loopa igenom databasen och se så det inte skapas dubletter
+        //randomNr = random.nextInt(2000000) + 2000000; //Måste loopa igenom databasen och se så det inte skapas dubletter
     }
     public void randomClassID(){
-        classID = random.nextInt(100) + 100; //Samma som ovan
+        //randomNr = random.nextInt(100) + 100; //Samma som ovan
     
     }
     public void viewdata(){
