@@ -30,6 +30,7 @@ public class Logic {
     int bookingID;
     int classID;
     int removeMember;
+    int randomNr; 
     
     public Logic() {}
             
@@ -75,23 +76,39 @@ public class Logic {
         
     }
     public void bookCourse(){
+        System.out.println("Which class would you like to participate in?");
+        className = sc.nextLine();
+        System.out.println("Which date?");
+        date = sc.nextInt();
+        //TODO Database
+        System.out.println("Confirmation: Your reservation for class: " + className + " on " + date + " has been successfully registered");
+        
         
     }
     public void cancelCourse(){
+        System.out.println("Enter Class ID");
+        classID = sc.nextInt();
+        System.out.println("Which date?");
+        date = sc.nextInt(); 
+        /TODO Database 
+
+        
+        
+
         
     }
     public void randomMemberID() {
-        memberID = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
+        randomNr = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
        // for (id : database)
            //boolean result = database.contains(memberID);
            //if (result == true) 
            //  return 
     }
     public void randomBookingNr(){
-        bookingID = random.nextInt(2000000) + 2000000; //Måste loopa igenom databasen och se så det inte skapas dubletter
+        randomNr = random.nextInt(2000000) + 2000000; //Måste loopa igenom databasen och se så det inte skapas dubletter
     }
     public void randomClassID(){
-        classID = random.nextInt(100) + 100; //Samma som ovan
+        randomNr = random.nextInt(100) + 100; //Samma som ovan
     
     }
 }
