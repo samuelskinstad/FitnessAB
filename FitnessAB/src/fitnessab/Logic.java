@@ -101,7 +101,8 @@ public class Logic {
         System.out.println("Enter Class ID");
         classID = sc.nextInt();
         System.out.println("Which date?");
-        date = sc.nextInt(); 
+        date = sc.nextInt();
+        System.out.println("hehehehe");
         
     }
     
