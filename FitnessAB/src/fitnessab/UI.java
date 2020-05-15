@@ -32,7 +32,7 @@ public class UI {
                     break;
                     
                 case "2":
-                    logic.removeMember();
+//                    logic.removeMember();
                     break;
                     
                 case "3":

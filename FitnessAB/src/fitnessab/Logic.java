@@ -9,32 +9,43 @@ package fitnessab;
  *
  * @author s_ski
  */
+import static fitnessab.DatabaseClass.DB_URL;
+import static fitnessab.DatabaseClass.DRIVER;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 import java.util.Random;
+import org.sqlite.SQLiteConfig;
 
         
 public class Logic {
-    Scanner sc = new Scanner();
+    static Connection conn = null;
+    public static final String DB_URL = "jdbc:sqlite:C:/m.db";
+    public static final String DRIVER = "org.sqlite.JDBC";
+    Scanner sc = new Scanner(System.in);
     Random random = new Random();
     String fName;
     String sName;
     int peronNr;
     String address; 
     String addressNr;
+    String mail;
     int phoneNr; 
     String className;
     int date;
     int startTime;
     int stopTime;
-    int memberID;
+    int memberIDRandom;
     int bookingID;
     int classID;
     int removeMember;
-    
+    DatabaseClass db = new DatabaseClass();
     public Logic() {}
             
     public void addMember(){
-        //Create Random number 
+        int random = randomMemberID();
         System.out.println("Enter your first name");
         fName = sc.nextLine();
         System.out.println("Enter your surname");
@@ -43,9 +54,11 @@ public class Logic {
         address = sc.nextLine();
         System.out.println("Enter your address number");
         addressNr = sc.nextLine();
+        System.out.println("Enter your mail");
+        mail = sc.nextLine();
         System.out.println("Enter your phone number");
         phoneNr = sc.nextInt();    
-        //Todo Database connection 
+        db.addMember(random, fName, sName, address, addressNr, mail, phoneNr);
     }
     public void removeMember(int id){
         System.out.println("Which Member would you like to remove?");
@@ -80,12 +93,25 @@ public class Logic {
     public void cancelCourse(){
         
     }
-    public void randomMemberID() {
-        memberID = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
-       // for (id : database)
-           //boolean result = database.contains(memberID);
-           //if (result == true) 
-           //  return 
+    public int randomMemberID() {
+        memberIDRandom = random.nextInt(1000000) + 1000000; //Måste loopa igenom databasen och se så det inte skapas dubletter 
+        try {
+            Class.forName(DRIVER);
+            Connection con = DriverManager.getConnection(DB_URL);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("Select memberID from Member");
+            while(rs.next()){
+                if(rs.getInt("memberID") == memberIDRandom){
+                    randomMemberID();
+                }
+            }
+       } catch (Exception e) {
+           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
+           System.out.println( e.toString() );
+           System.out.println("error");
+           System.exit(0);
+       }
+        return memberIDRandom;
     }
     public void randomBookingNr(){
         bookingID = random.nextInt(2000000) + 2000000; //Måste loopa igenom databasen och se så det inte skapas dubletter
