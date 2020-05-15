@@ -19,12 +19,12 @@ public class UI {
     Random randomID = new Random();
     public void UI(){
         while(!quit){
-            System.out.println("1: lägg till ny medlem\n"
-                    + "2: Ta bort medlem\n"
-                    + "3: Skapa pass\n"
-                    + "4: Boka pass\n"
-                    + "5: Avboka pass\n"
-                    + "6: Avsluta programmet");
+            System.out.println("1: Add Member\n"
+                    + "2: Remove Member\n"
+                    + "3: Create Class\n"
+                    + "4: Reservation for Class\n"
+                    + "5: Cancel reservation for Class\n"
+                    + "6: Quit Program");
             String input = scan.nextLine().trim();
             switch(input){
                 case "1":
