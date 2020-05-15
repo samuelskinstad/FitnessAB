@@ -14,7 +14,7 @@ import java.util.Random;
 
         
 public class Logic {
-    Scanner sc = new Scanner();
+    Scanner sc = new Scanner(System.in);
     Random random = new Random();
     String fName;
     String sName;
