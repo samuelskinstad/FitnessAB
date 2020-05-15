@@ -25,14 +25,14 @@ public class UI {
                     + "4: Boka pass\n"
                     + "5: Avboka pass\n"
                     + "6: Avsluta programmet");
-            String input = scan.nextLine();
+            String input = scan.nextLine().trim();
             switch(input){
                 case "1":
                     logic.addMember();
                     break;
                     
                 case "2":
-//                    logic.removeMember();
+                    logic.removeMember();
                     break;
                     
                 case "3":
@@ -44,7 +44,7 @@ public class UI {
                 case "5":
                     logic.cancelCourse();
                     
-                case "66":
+                case "viewall":
                     logic.viewdata();
                     
                 case "6":

@@ -60,11 +60,11 @@ public class Logic {
         phoneNr = sc.nextInt();
         db.addMember(memberIDRandom, fName, sName, address, addressNr, mail, phoneNr);
     }
-    public void removeMember(int id){
+    public void removeMember(){
         System.out.println("Which Member would you like to remove?");
         System.out.println("Enter Member ID");
         removeMember = sc.nextInt();
-        //TODO Database connection 
+        db.removeMember(removeMember);
         
     }
     public boolean checkIn(int scannedCard){
