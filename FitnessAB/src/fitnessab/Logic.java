@@ -45,7 +45,7 @@ public class Logic {
     public Logic() {}
             
     public void addMember(){
-        int random = randomMemberID();
+        randomMemberID();
         System.out.println("Enter your first name");
         fName = sc.nextLine();
         System.out.println("Enter your surname");
@@ -57,8 +57,8 @@ public class Logic {
         System.out.println("Enter your mail");
         mail = sc.nextLine();
         System.out.println("Enter your phone number");
-        phoneNr = sc.nextInt();    
-        db.addMember(random, fName, sName, address, addressNr, mail, phoneNr);
+        phoneNr = sc.nextInt();
+        db.addMember(memberIDRandom, fName, sName, address, addressNr, mail, phoneNr);
     }
     public void removeMember(int id){
         System.out.println("Which Member would you like to remove?");

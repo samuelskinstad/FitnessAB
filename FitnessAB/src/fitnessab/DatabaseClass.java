@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import org.sqlite.SQLiteConfig;
-import java.sql.*;
 
 /**
  *
@@ -28,7 +27,7 @@ public class DatabaseClass {
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            stmt.executeQuery("insert into Member (memberID, fName, eName, adress, adressNr, mail, phoneNr) VALUES ('" + memberID + "','" + fName + "','" +
+            stmt.executeUpdate("insert into Member (memberID, fName, eName, adress, adressNr, mail, phoneNr) VALUES ('" + memberID + "','" + fName + "','" +
                     eName + "','" + adress + "','" + adressNr + "','" + mail + "','" + phoneNr + "')");
        } catch (Exception e) {
            // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
@@ -37,20 +36,15 @@ public class DatabaseClass {
        }
     }
     public void viewall(){
-        int i = 1;
          try {
             Class.forName(DRIVER);
             Connection con = DriverManager.getConnection(DB_URL);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Member");
              while(rs.next()){
-                 if(rs.getString(i).equals("Samuel")){
-                     System.out.println(rs.getString(i));
-                 }
-                 else{
-                     System.out.println("no name");
-                 }
-                 i++;
+                 System.out.println("ID: " + rs.getInt("memberID") + ",");
+                 System.out.println("Name: " + rs.getString("fName") + ",");
+                 System.out.println("LastName: " + rs.getString("eName"));
              }
        } catch (Exception e) {
            // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
