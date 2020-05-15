@@ -72,18 +72,18 @@ public class DatabaseClass {
        }
     }
     
-//    public void createCourse(){
-//        try {
-//            Class.forName(DRIVER);
-//            Connection con = DriverManager.getConnection(DB_URL);
-//            Statement stmt = con.createStatement();
+    public void createCourse(){
+        try {
+            Class.forName(DRIVER);
+            Connection con = DriverManager.getConnection(DB_URL);
+            Statement stmt = con.createStatement();
 //            ResultSet rs = stmt.executeQuery("insert into Class (classID, date, time, name) VALUES ('" + classID + "','" + date + "','" + time + "','" + name + "')");
-//       } catch (Exception e) {
-//           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
-//           System.out.println( e.toString() );
-//           System.exit(0);
-//       }
-//    }
+       } catch (Exception e) {
+           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+    }
     
 //    public void bookCourse(){
 //        try {
