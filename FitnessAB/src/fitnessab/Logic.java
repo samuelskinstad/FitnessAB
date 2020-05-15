@@ -148,7 +148,7 @@ public class Logic {
     }
     
     public int randomClassID(){
-        classID = random.nextInt(3000000) + 300000;
+        classID = random.nextInt(3000000) + 3000000;
         try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DB_URL);
