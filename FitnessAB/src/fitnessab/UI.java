@@ -37,15 +37,19 @@ public class UI {
                     
                 case "3":
                     logic.createCourse();
+                    break;
                     
                 case "4":
                     logic.bookCourse();
+                    break;
                     
                 case "5":
                     logic.cancelCourse();
+                    break;
                     
                 case "viewall":
                     logic.viewdata();
+                    break;
                     
                 case "6":
                     quit = true;
