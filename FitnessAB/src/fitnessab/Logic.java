@@ -136,7 +136,7 @@ public class Logic {
             ResultSet rs = stmt.executeQuery("Select bookingID from Booking");
             while(rs.next()){
                 if(rs.getInt("bookingID") == bookingID){
-                    randomMemberID();
+                    randomBookingNr();
                 }
             }
        } catch (Exception e) {
@@ -156,7 +156,7 @@ public class Logic {
             ResultSet rs = stmt.executeQuery("Select classID from Class");
             while(rs.next()){
                 if(rs.getInt("classID") == classID){
-                    randomMemberID();
+                    randomClassID();
                 }
             }
        } catch (Exception e) {
