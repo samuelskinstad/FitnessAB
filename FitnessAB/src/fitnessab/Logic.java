@@ -202,8 +202,8 @@ public class Logic {
         System.out.println("Password: ");
         password = sc.nextLine();
         //TODO database 
-        if (member == memberID && password == password) {
-            System.out.println("Access Successful");
+        if (member == memberID && password == passwordID) {
+            System.out.println("Login Successful");
         }else{
             System.out.println("Access Denied");
         }
