@@ -42,6 +42,8 @@ public class Logic {
     private int bookingID;
     private int classID;
     private int removeMember;
+    private String password; 
+    private int memberID; 
     DatabaseClass db = new DatabaseClass();
     public Logic() {}
             
@@ -192,5 +194,21 @@ public class Logic {
     }
     public void viewdata(){
         db.viewall();
+    }
+    
+    public void checkLogin(){
+        System.out.println("User ID: ");
+        memberID = sc.nextInt();
+        System.out.println("Password: ");
+        password = sc.nextLine();
+        //TODO database 
+        if (member == memberID && password == password) {
+            System.out.println("Access Successful");
+        }else{
+            System.out.println("Access Denied");
+        }
+        
+        
+        
     }
 }
