@@ -55,7 +55,7 @@ public class UI {
                     quit = true;
                     
                 default:
-                    System.out.println("Felaktig input");
+                    System.out.println("Incorrect input");
                     break;
             }
         }
