@@ -18,7 +18,7 @@ import org.sqlite.SQLiteConfig;
 public class DatabaseClass {
     static Connection conn = null;
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
-    public static final String DRIVER = "org.sqlite.JDBC"; 
+    public static final String DRIVER = "org.sqlite.JDBC";
     
     public void addMember(int memberID, String fName, String eName, String adress, String adressNr, String mail, int phoneNr){
         try {
@@ -30,7 +30,6 @@ public class DatabaseClass {
             stmt.executeUpdate("insert into Member (memberID, fName, eName, adress, adressNr, mail, phoneNr) VALUES ('" + memberID + "','" + fName + "','" +
                     eName + "','" + adress + "','" + adressNr + "','" + mail + "','" + phoneNr + "')");
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }
@@ -51,7 +50,6 @@ public class DatabaseClass {
                  System.out.println("phoneNr: " + rs.getInt("phoneNr"));
              }
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }
@@ -66,7 +64,6 @@ public class DatabaseClass {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("delete from Member where memberID = " + memberID);
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }
@@ -82,21 +79,19 @@ public class DatabaseClass {
             stmt.executeUpdate("insert into Class (classID, className, date, time, name) VALUES ('" + ID + "','" +
                     className + "','" + date + "','" +startTime + "','" + stopTime + "')");
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }
     }
     
-    public void bookCourse(){
+    public void bookCourse(int bookingID, int memberID, int classID, String fName, int date){
         try {
             Class.forName(DRIVER);
             Connection con = DriverManager.getConnection(DB_URL);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("insert into Booking (bookingID, member, name, date, class) VALUES ('" + bookingID + "','" + memberID + "','" + name + "','"
-                    + date + "','" + classID + "')");
+            stmt.executeUpdate("insert into Booking (bookingID, memberiD, classID, fName, date1) VALUES ('" + bookingID + "','" + memberID + "','" +
+            classID + "','" + fName + "','" + date + "')");
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }

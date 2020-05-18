@@ -11,6 +11,7 @@ package fitnessab;
  */
 import static fitnessab.DatabaseClass.DB_URL;
 import static fitnessab.DatabaseClass.DRIVER;
+import static fitnessab.DatabaseClass.conn;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -68,6 +69,7 @@ public class Logic {
         db.removeMember(removeMember);
         
     }
+    
     public boolean checkIn(int scannedCard){
         if (scannedCard == 1)
             return true; 
@@ -89,15 +91,37 @@ public class Logic {
         
     }
     public void bookCourse(){
+        System.out.println("MemberID: ");
+        int input = sc.nextInt();
+        int memberID = 0;
+        String name = "";
+        int date = 0;
+        randomBookingNr();
         System.out.println("Which class would you like to participate in?");
         className = sc.nextLine();
         System.out.println("Which date?");
         date = sc.nextInt();
-        //TODO Database
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select memberID, classID, fName, date1 from Booking where memberID = " + input);
+            while(rs.next()){
+                memberID = rs.getInt("memberID");
+                classID = rs.getInt("classiD");
+                name = rs.getString("fName");
+                date = rs.getInt("date1");
+            }
+            db.bookCourse(bookingID, memberID, classID, name, date);
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
         System.out.println("Confirmation: Your reservation for class: " + className + " on " + date + " has been successfully registered");
-        
-        
     }
+    
     public void cancelCourse(){
         System.out.println("Enter Class ID");
         classID = sc.nextInt();
