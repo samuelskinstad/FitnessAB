@@ -16,6 +16,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.Random;
 import org.sqlite.SQLiteConfig;
@@ -190,11 +192,16 @@ public class Logic {
        }
         return classID;
     }
+    
     public void viewdata(){
         db.viewall();
     }
     
     public void getCourses(){
+        String pattern = "yyyyMMdd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+        int integerDate = Integer.parseInt(date);
         try {
             Class.forName(DRIVER);
             SQLiteConfig config = new SQLiteConfig();
@@ -203,8 +210,10 @@ public class Logic {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Class");
             while(rs.next()){
+                if(integerDate >= integerDate-1){
                 System.out.println("ClassName: " + rs.getString("ClassName"));
                 System.out.println("ClassDate: " + rs.getInt("date1"));
+                }
             }
        } catch (Exception e) {
            System.out.println( e.toString() );
