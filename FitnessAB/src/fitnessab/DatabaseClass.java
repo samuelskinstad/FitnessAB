@@ -40,14 +40,22 @@ public class DatabaseClass {
             Connection con = DriverManager.getConnection(DB_URL);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Member");
-             while(rs.next()){
-                 System.out.println("ID: " + rs.getInt("memberID") + ",");
-                 System.out.println("Name: " + rs.getString("fName") + ",");
-                 System.out.println("LastName: " + rs.getString("eName") + ",");
-                 System.out.println("Address: " + rs.getString("adress") + ",");
-                 System.out.println("AddressNr: " + rs.getString("adressNr") + ",");
-                 System.out.println("Mail: " + rs.getString("mail") + ",");
-                 System.out.println("phoneNr: " + rs.getInt("phoneNr"));
+//             while(rs.next()){
+//                 System.out.println("ID: " + rs.getInt("memberID") + ",");
+//                 System.out.println("Name: " + rs.getString("fName") + ",");
+//                 System.out.println("LastName: " + rs.getString("eName") + ",");
+//                 System.out.println("Address: " + rs.getString("adress") + ",");
+//                 System.out.println("AddressNr: " + rs.getString("adressNr") + ",");
+//                 System.out.println("Mail: " + rs.getString("mail") + ",");
+//                 System.out.println("phoneNr: " + rs.getInt("phoneNr"));
+//             }
+             ResultSet result = stmt.executeQuery("Select * from booking");
+             while(result.next()){
+                 System.out.println("ID: " + result.getInt("bookingID") + ",");
+                 System.out.println("memberID: " + result.getInt("memberID") + ",");
+                 System.out.println("classiD: " + result.getInt("classID") + ",");
+                 System.out.println("Name: " + result.getInt("fName") + ",");
+                 System.out.println("date: " + result.getInt("date1"));
              }
        } catch (Exception e) {
            System.out.println( e.toString() );
@@ -76,7 +84,7 @@ public class DatabaseClass {
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("insert into Class (classID, className, date, time, name) VALUES ('" + ID + "','" +
+            stmt.executeUpdate("insert into Class (classID, className, date1, startTime, stopTime) VALUES ('" + ID + "','" +
                     className + "','" + date + "','" +startTime + "','" + stopTime + "')");
        } catch (Exception e) {
            System.out.println( e.toString() );

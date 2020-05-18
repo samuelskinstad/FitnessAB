@@ -53,6 +53,7 @@ public class UI {
                     
                 case "6":
                     quit = true;
+                    break;
                     
                 default:
                     System.out.println("Felaktig input");
