@@ -90,6 +90,7 @@ public class Logic {
         
     }
     public void bookCourse(){
+        getCourses();
         System.out.println("MemberID: ");
         int input = sc.nextInt();
         int memberID = 0;
@@ -191,5 +192,23 @@ public class Logic {
     }
     public void viewdata(){
         db.viewall();
+    }
+    
+    public void getCourses(){
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select * from Class");
+            while(rs.next()){
+                System.out.println("ClassName: " + rs.getString("ClassName"));
+                System.out.println("ClassDate: " + rs.getInt("date1"));
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
     }
 }
