@@ -82,7 +82,7 @@ public class Logic {
         randomClassID();
         System.out.println("Name of class?");
         className = sc.nextLine();
-        System.out.println("Enter which date the class will be held");
+        System.out.println("Enter which date the class will be held (YYYYMMDD)");
         date = sc.nextInt();
         System.out.println("Enter start time (Example 20 for 20.00");
         startTime = sc.nextInt();
@@ -127,9 +127,6 @@ public class Logic {
     public void cancelCourse(){
         System.out.println("Enter Class ID");
         classID = sc.nextInt();
-        System.out.println("Which date?");
-        date = sc.nextInt();
-        System.out.println("hehehehe");
         db.cancelCourse(classID);
     }
     
@@ -201,19 +198,16 @@ public class Logic {
         String pattern = "yyyyMMdd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
-        int integerDate = Integer.parseInt(date);
         try {
             Class.forName(DRIVER);
             SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * from Class");
+            ResultSet rs = stmt.executeQuery("Select * from Class where date1 >= " + date);
             while(rs.next()){
-                if(integerDate >= integerDate-1){
                 System.out.println("ClassName: " + rs.getString("ClassName"));
                 System.out.println("ClassDate: " + rs.getInt("date1"));
-                }
             }
        } catch (Exception e) {
            System.out.println( e.toString() );

@@ -49,13 +49,13 @@ public class DatabaseClass {
 //                 System.out.println("Mail: " + rs.getString("mail") + ",");
 //                 System.out.println("phoneNr: " + rs.getInt("phoneNr"));
 //             }
-             ResultSet result = stmt.executeQuery("Select * from booking");
+             ResultSet result = stmt.executeQuery("Select * from Class");
              while(result.next()){
-                 System.out.println("ID: " + result.getInt("bookingID") + ",");
-                 System.out.println("memberID: " + result.getInt("memberID") + ",");
-                 System.out.println("classiD: " + result.getInt("classID") + ",");
-                 System.out.println("Name: " + result.getInt("fName") + ",");
-                 System.out.println("date: " + result.getInt("date1"));
+                 System.out.println("ID: " + result.getInt("ClassID") + ",");
+                 System.out.println("date1: " + result.getInt("date1") + ",");
+                 System.out.println("startTime: " + result.getInt("startTime") + ",");
+                 System.out.println("stopTime " + result.getInt("stopTime") + ",");
+                 System.out.println("className: " + result.getString("ClassName"));
              }
        } catch (Exception e) {
            System.out.println( e.toString() );
@@ -84,7 +84,7 @@ public class DatabaseClass {
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("insert into Class (classID, className, date1, startTime, stopTime) VALUES ('" + ID + "','" +
+            stmt.executeUpdate("insert into Class (classID, ClassName, date1, startTime, stopTime) VALUES ('" + ID + "','" +
                     className + "','" + date + "','" +startTime + "','" + stopTime + "')");
        } catch (Exception e) {
            System.out.println( e.toString() );
