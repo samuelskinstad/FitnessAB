@@ -97,16 +97,17 @@ public class DatabaseClass {
        }
     }
     
-//    public void cancelCourse(){
-//        try {
-//            Class.forName(DRIVER);
-//            Connection con = DriverManager.getConnection(DB_URL);
-//            Statement stmt = con.createStatement();
-//            ResultSet rs = stmt.executeQuery("Delete from booking where bookingID = " + bookingID);
-//       } catch (Exception e) {
-//           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
-//           System.out.println( e.toString() );
-//           System.exit(0);
-//       }
-//    }
+    public void cancelCourse(int classID){
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("delete from Class where classID = " + classID);
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+    }
 }

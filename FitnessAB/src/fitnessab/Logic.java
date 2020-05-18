@@ -67,7 +67,6 @@ public class Logic {
         System.out.println("Enter Member ID");
         removeMember = sc.nextInt();
         db.removeMember(removeMember);
-        
     }
     
     public boolean checkIn(int scannedCard){
@@ -128,7 +127,7 @@ public class Logic {
         System.out.println("Which date?");
         date = sc.nextInt();
         System.out.println("hehehehe");
-        
+        db.cancelCourse(classID);
     }
     
     public int randomMemberID() {
