@@ -20,14 +20,14 @@ public class DatabaseClass {
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
     
-    public void addMember(int memberID, double personNr, String fName, String eName, String adress, String adressNr, String mail, int phoneNr, String password){
+    public void addMember(int memberIDRandom, double personNr, String fName, String eName, String adress, String adressNr, String mail, int phoneNr, String password){
         try {
             Class.forName(DRIVER);
             SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("insert into Member (memberID, personNr, fName, eName, adress, adressNr, mail, phoneNr, password) VALUES ('" + memberID + "','" + personNr + "','" +  fName + "','" +
+            stmt.executeUpdate("insert into Member (memberID, personNr, fName, eName, adress, adressNr, mail, phoneNr, password) VALUES ('" + memberIDRandom + "','" + personNr + "','" +  fName + "','" +
                     eName + "','" + adress + "','" + adressNr + "','" + mail + "','" + phoneNr + "', '" + password + "' )");
        } catch (Exception e) {
            System.out.println( e.toString() );
@@ -117,7 +117,7 @@ public class DatabaseClass {
             Class.forName(DRIVER);
             Connection con = DriverManager.getConnection(DB_URL);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * from Login"); 
+            ResultSet rs = stmt.executeQuery("Select MemberID, password from Member"); 
             while(rs.next()){
                 if (rs.getInt("memberID") == memberID && rs.getString("password") == password) {
                     System.out.println("Login Successfull");

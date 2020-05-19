@@ -25,30 +25,30 @@ public class Logic {
     static Connection conn = null;
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
-    private Scanner sc = new Scanner(System.in);
-    private Random random = new Random();
-    private double personNr;
-    private String fName;
-    private String sName;
-    private String address; 
-    private String addressNr;
-    private String mail;
-    private int phoneNr; 
-    private String className;
-    private int date;
-    private int startTime;
-    private int stopTime;
-    private int memberIDRandom;
-    private int bookingID;
-    private int classID;
-    private int removeMember;
-    private String password; 
-    private int memberID; 
+    Scanner sc = new Scanner(System.in);
+    Random random = new Random();
+    double personNr;
+    String fName;
+    String sName;
+    String address; 
+    String addressNr;
+    String mail;
+    int phoneNr; 
+    String className;
+    int date;
+    int startTime;
+    int stopTime;
+    int memberIDRandom;
+    int bookingID;
+    int classID;
+    int removeMember;
+    String password; 
+    int memberID; 
     DatabaseClass db = new DatabaseClass();
     public Logic() {}
             
     public void addMember(){
-       memberIDRandom =  randomMemberID();
+        memberIDRandom =  randomMemberID();
         System.out.println(memberIDRandom);
         System.out.println("Enter Social Security Number - YYYYMMDDXXXX");
         personNr = sc.nextDouble();
@@ -206,6 +206,7 @@ public class Logic {
     public void checkLogin(){
         System.out.println("User ID: ");
         memberID = sc.nextInt();
+        sc.nextLine();
         System.out.println("Password: ");
         password = sc.nextLine(); 
         db.checkLogins(memberID, password);
