@@ -20,15 +20,15 @@ public class DatabaseClass {
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
     
-    public void addMember(int memberID, String fName, String eName, String adress, String adressNr, String mail, int phoneNr){
+    public void addMember(int memberID, int personNr, String fName, String eName, String adress, String adressNr, String mail, int phoneNr, String password){
         try {
             Class.forName(DRIVER);
             SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("insert into Member (memberID, fName, eName, adress, adressNr, mail, phoneNr) VALUES ('" + memberID + "','" + fName + "','" +
-                    eName + "','" + adress + "','" + adressNr + "','" + mail + "','" + phoneNr + "')");
+            stmt.executeUpdate("insert into Member (memberID, personNr, fName, eName, adress, adressNr, mail, phoneNr, password) VALUES ('" + memberID + "','" + personNr + "','" +  fName + "','" +
+                    eName + "','" + adress + "','" + adressNr + "','" + mail + "','" + phoneNr + "', '" + password + "' )");
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
@@ -97,6 +97,7 @@ public class DatabaseClass {
        }
     }
     
+    
 //    public void cancelCourse(){
 //        try {
 //            Class.forName(DRIVER);
@@ -109,4 +110,25 @@ public class DatabaseClass {
 //           System.exit(0);
 //       }
 //    }
-}
+    
+    
+    public void checkLogins(int memberID, String password) {
+        try {
+            Class.forName(DRIVER);
+            Connection con = DriverManager.getConnection(DB_URL);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("Select * from Login"); 
+            while(rs.next()){
+                if (rs.getInt("memberID") == memberID && rs.getString("password") == password) {
+                    System.out.println("Login Successfull");
+                } else {
+                    System.out.println("Invalid Login - Please Try Again");
+                }
+            }
+        } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+        
+    }
+}   

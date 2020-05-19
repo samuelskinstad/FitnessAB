@@ -27,9 +27,9 @@ public class Logic {
     public static final String DRIVER = "org.sqlite.JDBC";
     private Scanner sc = new Scanner(System.in);
     private Random random = new Random();
+    private int = personNr;
     private String fName;
-    private String sName;
-    private int peronNr;
+    private String sName
     private String address; 
     private String addressNr;
     private String mail;
@@ -49,6 +49,8 @@ public class Logic {
             
     public void addMember(){
         randomMemberID();
+        System.out.println("Enter Social Security Number");
+        personNr = sc.nextInt();
         System.out.println("Enter your first name");
         fName = sc.nextLine();
         System.out.println("Enter your surname");
@@ -61,7 +63,9 @@ public class Logic {
         mail = sc.nextLine();
         System.out.println("Enter your phone number");
         phoneNr = sc.nextInt();
-        db.addMember(memberIDRandom, fName, sName, address, addressNr, mail, phoneNr);
+        System.out.println("Enter your password");
+        password = sc.nextLine();
+        db.addMember(memberIDRandom, personNr,  fName, sName, address, addressNr, mail, phoneNr, password);
     }
     
     public void removeMember(){
@@ -200,13 +204,10 @@ public class Logic {
         System.out.println("User ID: ");
         memberID = sc.nextInt();
         System.out.println("Password: ");
-        password = sc.nextLine();
-        //TODO database 
-        if (member == memberID && password == passwordID) {
-            System.out.println("Login Successful");
-        }else{
-            System.out.println("Access Denied");
-        }
+        password = sc.nextLine(); 
+        db.checkLogins(memberID, password)
+        
+
         
         
         
