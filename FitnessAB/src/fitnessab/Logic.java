@@ -36,6 +36,7 @@ public class Logic {
     private String mail;
     private int phoneNr; 
     private String className;
+    private String stringDate;
     private int date;
     private int startTime;
     private int stopTime;
@@ -90,11 +91,21 @@ public class Logic {
     }
 
     public void createCourse(){
+        boolean format = false;
         randomClassID();
         System.out.println("Name of class?");
         className = sc.nextLine();
         System.out.println("Enter which date the class will be held (YYYYMMDD)");
-        date = sc.nextInt();
+        stringDate = sc.nextLine();
+        while(!format){
+            if(stringDate.length() != 8){
+                System.out.println("Fel format, försök igen (YYYYMMDD)");
+                stringDate = sc.nextLine();
+            } else{
+                date = Integer.parseInt(stringDate);
+                format = true;
+            }
+        }
         System.out.println("Enter start time (Example 20 for 20.00");
         startTime = sc.nextInt();
         System.out.println("Enter stop time (Example 21 for 21.00)");
