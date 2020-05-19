@@ -34,6 +34,7 @@ public class DatabaseClass {
            System.exit(0);
        }
     }
+    
     public void viewall(){
          try {
             Class.forName(DRIVER);
