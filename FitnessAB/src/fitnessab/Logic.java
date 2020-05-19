@@ -22,7 +22,6 @@ import java.util.Scanner;
 import java.util.Random;
 import org.sqlite.SQLiteConfig;
 
-        
 public class Logic {
     static Connection conn = null;
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
@@ -66,6 +65,19 @@ public class Logic {
     
     public void removeMember(){
         System.out.println("Which Member would you like to remove?");
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select memberID, fName from Member");
+            while(rs.next()){
+                System.out.println("Name: " + rs.getString("fName"));
+                System.out.println("ID: " + rs.getInt("memberID"));
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
         System.out.println("Enter Member ID");
         removeMember = sc.nextInt();
         db.removeMember(removeMember);
@@ -76,8 +88,7 @@ public class Logic {
             return true; 
         return false;                     
     }
-        
-  
+
     public void createCourse(){
         randomClassID();
         System.out.println("Name of class?");
@@ -89,8 +100,8 @@ public class Logic {
         System.out.println("Enter stop time (Example 21 for 21.00)");
         stopTime = sc.nextInt();
         db.createCourse(classID, className, date, startTime, stopTime);
-        
     }
+    
     public void bookCourse(){
         getCourses();
         System.out.println("MemberID: ");
