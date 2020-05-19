@@ -49,7 +49,7 @@ public class Logic {
             
     public void addMember(){
         randomMemberID();
-        System.out.println("Enter Social Security Number");
+        System.out.println("Enter Social Security Number - YYYYMMDDXXXX");
         personNr = sc.nextInt();
         System.out.println("Enter your first name");
         fName = sc.nextLine();
