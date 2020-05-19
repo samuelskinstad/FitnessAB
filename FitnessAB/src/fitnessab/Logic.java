@@ -136,6 +136,20 @@ public class Logic {
     }
     
     public void cancelCourse(){
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select classID, date1, ClassName from Class");
+            while(rs.next()){
+                System.out.println("Class: " + rs.getString("ClassName"));
+                System.out.println("Date: " + rs.getInt("date1"));
+                System.out.println("ID: " + rs.getInt("classID"));
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
         System.out.println("Enter Class ID");
         classID = sc.nextInt();
         db.cancelCourse(classID);

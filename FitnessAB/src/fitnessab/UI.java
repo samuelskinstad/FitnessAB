@@ -23,7 +23,7 @@ public class UI {
                     + "2: Remove Member\n"
                     + "3: Create Class\n"
                     + "4: Reservation for Class\n"
-                    + "5: Cancel reservation for Class\n"
+                    + "5: Cancel Class\n"
                     + "6: Quit Program");
             String input = scan.nextLine().trim();
             switch(input){
