@@ -23,8 +23,9 @@ public class UI {
                     + "2: Remove Member\n"
                     + "3: Create Class\n"
                     + "4: Reservation for Class\n"
-                    + "5: Cancel Class\n"
-                    + "6: Quit Program");
+                    + "5: Cancel reservation for Class\n"
+                    + "6: Cancel Class\n"
+                    + "7: Quit Program");
             String input = scan.nextLine().trim();
             switch(input){
                 case "1":
@@ -44,17 +45,19 @@ public class UI {
                     break;
                     
                 case "5":
+                    logic.cancelBooking();
+                    break;
+                    
+                case "6":
                     logic.cancelCourse();
+                    break;
+                    
+                case "7":
+                    quit = true;
                     break;
                     
                 case "viewall":
                     logic.viewdata();
-                    break;
-                    
-                case "6":
-                    quit = true;
-                    break;
-                    
                 default:
                     System.out.println("Felaktig input");
                     break;

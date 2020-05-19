@@ -118,4 +118,18 @@ public class DatabaseClass {
            System.exit(0);
        }
     }
+    
+    public void cancelBooking(int memberID, int bookingiD){
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("delete from Booking where memberID = " + memberID + "AND classID = " + bookingiD);
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+    }
 }
