@@ -20,7 +20,7 @@ public class DatabaseClass {
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
     
-    public void addMember(int memberID, int personNr, String fName, String eName, String adress, String adressNr, String mail, int phoneNr, String password){
+    public void addMember(int memberID, double personNr, String fName, String eName, String adress, String adressNr, String mail, int phoneNr, String password){
         try {
             Class.forName(DRIVER);
             SQLiteConfig config = new SQLiteConfig();

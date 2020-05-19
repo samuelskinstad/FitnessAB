@@ -27,9 +27,9 @@ public class Logic {
     public static final String DRIVER = "org.sqlite.JDBC";
     private Scanner sc = new Scanner(System.in);
     private Random random = new Random();
-    private int = personNr;
+    private double personNr;
     private String fName;
-    private String sName
+    private String sName;
     private String address; 
     private String addressNr;
     private String mail;
@@ -48,9 +48,11 @@ public class Logic {
     public Logic() {}
             
     public void addMember(){
-        randomMemberID();
+       memberIDRandom =  randomMemberID();
+        System.out.println(memberIDRandom);
         System.out.println("Enter Social Security Number - YYYYMMDDXXXX");
-        personNr = sc.nextInt();
+        personNr = sc.nextDouble();
+        sc.nextLine();
         System.out.println("Enter your first name");
         fName = sc.nextLine();
         System.out.println("Enter your surname");
@@ -63,6 +65,7 @@ public class Logic {
         mail = sc.nextLine();
         System.out.println("Enter your phone number");
         phoneNr = sc.nextInt();
+        sc.nextLine();
         System.out.println("Enter your password");
         password = sc.nextLine();
         db.addMember(memberIDRandom, personNr,  fName, sName, address, addressNr, mail, phoneNr, password);
@@ -205,7 +208,7 @@ public class Logic {
         memberID = sc.nextInt();
         System.out.println("Password: ");
         password = sc.nextLine(); 
-        db.checkLogins(memberID, password)
+        db.checkLogins(memberID, password);
         
 
         
