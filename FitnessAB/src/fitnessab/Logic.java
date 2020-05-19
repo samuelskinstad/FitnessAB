@@ -92,7 +92,7 @@ public class Logic {
         className = sc.nextLine();
         System.out.println("Enter which date the class will be held");
         date = sc.nextInt();
-        System.out.println("Enter start time (Example 20 for 20.00");
+        System.out.println("Enter start time (Example 20 for 20.00)");
         startTime = sc.nextInt();
         System.out.println("Enter stop time (Example 21 for 21.00)");
         stopTime = sc.nextInt();
@@ -106,8 +106,10 @@ public class Logic {
         String name = "";
         int date = 0;
         randomBookingNr();
+        sc.nextLine();
         System.out.println("Which class would you like to participate in?");
         className = sc.nextLine();
+        
         System.out.println("Which date?");
         date = sc.nextInt();
         try {

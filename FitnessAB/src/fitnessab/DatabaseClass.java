@@ -76,7 +76,7 @@ public class DatabaseClass {
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("insert into Class (classID, className, date, time, name) VALUES ('" + ID + "','" +
+            stmt.executeUpdate("insert into Class (classID, className, date1, startTime, stopTime) VALUES ('" + ID + "','" +
                     className + "','" + date + "','" +startTime + "','" + stopTime + "')");
        } catch (Exception e) {
            System.out.println( e.toString() );
