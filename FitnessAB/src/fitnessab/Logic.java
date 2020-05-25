@@ -329,7 +329,8 @@ public class Logic {
                     + "4: adressNr: \n"
                     + "5: mail: \n"
                     + "6: phoneNr: \n"
-                    + "7: password\n");
+                    + "7: password\n"
+                    + "8: cancel");
         String relation = sc.nextLine();
         if(relation.equals("fName") || relation.equals("eName")
                 || relation.equals("adress") || relation.equals("adressNr")
@@ -342,7 +343,8 @@ public class Logic {
             phoneNr = sc.nextInt();
             String phone = Integer.toString(phoneNr);
             db.updateMember(relation, phone, memberID);
+        } else if (relation.equals("cancel")){
+            new UI().UI();
         }
-        
     }
 }

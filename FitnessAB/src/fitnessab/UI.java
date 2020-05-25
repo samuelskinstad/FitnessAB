@@ -28,6 +28,7 @@ public class UI {
                     + "6: Cancel reservation for Class\n"
                     + "7: Cancel class\n"
                     + "8: View All Members\n"
+                    + "9: Update member information"
                     + "9: Quit Program");
             String input = scan.nextLine().trim();
             switch(input){
@@ -64,6 +65,10 @@ public class UI {
                     break;
                     
                 case "9":
+                    logic.updateMember();
+                    break;
+                    
+                case "10":
                     quit = true;
                     break;
                     
