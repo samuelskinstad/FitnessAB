@@ -44,11 +44,18 @@ public class Logic {
     private int bookingID;
     private int classID;
     private int removeMember;
+    double personNr;
+    String password; 
+    int memberID; 
     DatabaseClass db = new DatabaseClass();
     public Logic() {}
             
     public void addMember(){
-        randomMemberID();
+        memberIDRandom =  randomMemberID();
+        System.out.println(memberIDRandom);
+        System.out.println("Enter Social Security Number - YYYYMMDDXXXX");
+        personNr = sc.nextDouble();
+        sc.nextLine();
         System.out.println("Enter your first name");
         fName = sc.nextLine();
         System.out.println("Enter your surname");
@@ -61,7 +68,10 @@ public class Logic {
         mail = sc.nextLine();
         System.out.println("Enter your phone number");
         phoneNr = sc.nextInt();
-        db.addMember(memberIDRandom, fName, sName, address, addressNr, mail, phoneNr);
+        sc.nextLine();
+        System.out.println("Enter your password");
+        password = sc.nextLine();
+        db.addMember(memberIDRandom, personNr,  fName, sName, address, addressNr, mail, phoneNr, password);
     }
     
     public void removeMember(){
@@ -106,10 +116,6 @@ public class Logic {
                 format = true;
             }
         }
-        System.out.println("Enter start time (Example 20 for 20.00");
-        startTime = sc.nextInt();
-        System.out.println("Enter stop time (Example 21 for 21.00)");
-        stopTime = sc.nextInt();
         db.createCourse(classID, className, date, startTime, stopTime);
     }
     
@@ -121,6 +127,7 @@ public class Logic {
         String name = "";
         int date = 0;
         randomBookingNr();
+        sc.nextLine();
         System.out.println("Which class would you like to participate in?");
         className = sc.nextLine();
         System.out.println("Which date?");
@@ -203,7 +210,7 @@ public class Logic {
             ResultSet rs = stmt.executeQuery("Select bookingID from Booking");
             while(rs.next()){
                 if(rs.getInt("bookingID") == bookingID){
-                    randomMemberID();
+                    randomBookingNr();
                 }
             }
        } catch (Exception e) {
@@ -222,7 +229,7 @@ public class Logic {
             ResultSet rs = stmt.executeQuery("Select classID from Class");
             while(rs.next()){
                 if(rs.getInt("classID") == classID){
-                    randomMemberID();
+                    randomClassID();
                 }
             }
        } catch (Exception e) {
@@ -276,5 +283,14 @@ public class Logic {
            System.out.println( e.toString() );
            System.exit(0);
        }
+    }
+    
+    public void checkLogin(){
+        System.out.println("User ID: ");
+        memberID = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Password: ");
+        password = sc.nextLine(); 
+        db.checkLogins(memberID, password);
     }
 }

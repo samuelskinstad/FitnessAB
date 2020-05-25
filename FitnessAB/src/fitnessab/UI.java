@@ -19,13 +19,16 @@ public class UI {
     Random randomID = new Random();
     public void UI(){
         while(!quit){
-            System.out.println("1: Add Member\n"
-                    + "2: Remove Member\n"
-                    + "3: Create Class\n"
-                    + "4: Reservation for Class\n"
-                    + "5: Cancel reservation for Class\n"
-                    + "6: Cancel Class\n"
-                    + "7: Quit Program");
+
+            System.out.println("1: Add Member\n" 
+                    + "2: Log In\n"
+                    + "3: Remove Member\n"
+                    + "4: Create Class\n"
+                    + "5: Reservation for Class\n"
+                    + "6: Cancel reservation for Class\n"
+                    + "7: Cancel class\n"
+                    + "8: View All Members\n"
+                    + "9: Quit Program");
             String input = scan.nextLine().trim();
             switch(input){
                 case "1":
@@ -33,33 +36,39 @@ public class UI {
                     break;
                     
                 case "2":
-                    logic.removeMember();
+                    logic.checkLogin();
                     break;
                     
                 case "3":
-                    logic.createCourse();
+                    logic.removeMember();
                     break;
                     
                 case "4":
-                    logic.bookCourse();
+                    logic.createCourse();
                     break;
                     
                 case "5":
-                    logic.cancelBooking();
+                    logic.bookCourse();
                     break;
                     
                 case "6":
-                    logic.cancelCourse();
+                    logic.cancelBooking();
                     break;
                     
                 case "7":
+                    logic.cancelCourse();
+                    break;
+                    
+                case "8":
+                    logic.viewdata();
+                    break;
+                    
+                case "9":
                     quit = true;
                     break;
                     
-                case "viewall":
-                    logic.viewdata();
                 default:
-                    System.out.println("Felaktig input");
+                    System.out.println("Incorrect input");
                     break;
             }
         }
