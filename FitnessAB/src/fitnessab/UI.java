@@ -62,8 +62,20 @@ public class UI {
                 case "8":
                     logic.viewdata();
                     break;
+                 
                     
-                case "9":
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                case "10":
+                    logic.checkIn();
+                    break;
+                    
+                case "11":
                     quit = true;
                     break;
                     

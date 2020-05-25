@@ -152,4 +152,18 @@ public class DatabaseClass {
            System.exit(0);
        }   
     }
+    
+    public void checkIn(int gymID, int gymCardID, String date) {
+     try {
+            Class.forName(DRIVER);
+            Connection con = DriverManager.getConnection(DB_URL);
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("insert into CheckIn (GymID, memberiD, date2) VALUES ('" + gymID + "','" + gymCardID + "','" + date + "')");
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+        
+        
+    }
 }

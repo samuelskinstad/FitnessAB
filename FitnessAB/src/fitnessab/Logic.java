@@ -47,6 +47,8 @@ public class Logic {
     double personNr;
     String password; 
     int memberID; 
+    private int gymID;
+    private int gymCardID;
     DatabaseClass db = new DatabaseClass();
     public Logic() {}
             
@@ -94,10 +96,17 @@ public class Logic {
         db.removeMember(removeMember);
     }
     
-    public boolean checkIn(int scannedCard){
-        if (scannedCard == 1)
-            return true; 
-        return false;                     
+    public void checkIn(){
+        gymID = 1; 
+        System.out.println("Please scan your gym card");
+        gymCardID = sc.nextInt();
+        String pattern = "yyyyMMdd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+        db.checkIn(gymID, gymCardID, date);
+        
+        
+                  
     }
 
     public void createCourse(){
