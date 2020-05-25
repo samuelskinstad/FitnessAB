@@ -30,7 +30,6 @@ public class Logic {
     private Random random = new Random();
     private String fName;
     private String sName;
-    private int peronNr;
     private String address; 
     private String addressNr;
     private String mail;
@@ -118,13 +117,17 @@ public class Logic {
         stringDate = sc.nextLine();
         while(!format){
             if(stringDate.length() != 8){
-                System.out.println("Fel format, försök igen (YYYYMMDD)");
+                System.out.println("Wrong format, try again (YYYYMMDD)");
                 stringDate = sc.nextLine();
             } else{
                 date = Integer.parseInt(stringDate);
                 format = true;
             }
         }
+        System.out.println("Enter start time of class (for example: 20 for 20:00)");
+        startTime = sc.nextInt();
+        System.out.println("Enter stop time of class (for example: 21 for 21:00)");
+        stopTime = sc.nextInt();
         db.createCourse(classID, className, date, startTime, stopTime);
     }
     
@@ -139,6 +142,7 @@ public class Logic {
         sc.nextLine();
         System.out.println("Which class would you like to participate in?");
         className = sc.nextLine();
+        
         System.out.println("Which date?");
         date = sc.nextInt();
         try {
