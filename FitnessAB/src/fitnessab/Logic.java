@@ -47,8 +47,8 @@ public class Logic {
     String password; 
     int memberID; 
     DatabaseClass db = new DatabaseClass();
-    public Logic() {}
-            
+    
+    public Logic() {}       
     public void addMember(){
         memberIDRandom =  randomMemberID();
         System.out.println(memberIDRandom);
