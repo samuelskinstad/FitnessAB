@@ -34,20 +34,29 @@ public class DatabaseClass {
            System.exit(0);
        }
     }
+    
     public void viewall(){
          try {
             Class.forName(DRIVER);
             Connection con = DriverManager.getConnection(DB_URL);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Member");
-             while(rs.next()){
-                 System.out.println("ID: " + rs.getInt("memberID") + ",");
-                 System.out.println("Name: " + rs.getString("fName") + ",");
-                 System.out.println("LastName: " + rs.getString("eName") + ",");
-                 System.out.println("Address: " + rs.getString("adress") + ",");
-                 System.out.println("AddressNr: " + rs.getString("adressNr") + ",");
-                 System.out.println("Mail: " + rs.getString("mail") + ",");
-                 System.out.println("phoneNr: " + rs.getInt("phoneNr"));
+//             while(rs.next()){
+//                 System.out.println("ID: " + rs.getInt("memberID") + ",");
+//                 System.out.println("Name: " + rs.getString("fName") + ",");
+//                 System.out.println("LastName: " + rs.getString("eName") + ",");
+//                 System.out.println("Address: " + rs.getString("adress") + ",");
+//                 System.out.println("AddressNr: " + rs.getString("adressNr") + ",");
+//                 System.out.println("Mail: " + rs.getString("mail") + ",");
+//                 System.out.println("phoneNr: " + rs.getInt("phoneNr"));
+//             }
+             ResultSet result = stmt.executeQuery("Select * from Class");
+             while(result.next()){
+                 System.out.println("ID: " + result.getInt("ClassID") + ",");
+                 System.out.println("date1: " + result.getInt("date1") + ",");
+                 System.out.println("startTime: " + result.getInt("startTime") + ",");
+                 System.out.println("stopTime " + result.getInt("stopTime") + ",");
+                 System.out.println("className: " + result.getString("ClassName"));
              }
        } catch (Exception e) {
            System.out.println( e.toString() );
@@ -97,20 +106,33 @@ public class DatabaseClass {
        }
     }
     
+    public void cancelCourse(int classID){
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("delete from Class where classID = " + classID);
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+    }
     
-//    public void cancelCourse(){
-//        try {
-//            Class.forName(DRIVER);
-//            Connection con = DriverManager.getConnection(DB_URL);
-//            Statement stmt = con.createStatement();
-//            ResultSet rs = stmt.executeQuery("Delete from booking where bookingID = " + bookingID);
-//       } catch (Exception e) {
-//           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
-//           System.out.println( e.toString() );
-//           System.exit(0);
-//       }
-//    }
-    
+    public void cancelBooking(int memberID, int bookingiD){
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("delete from Booking where memberID = " + memberID + "AND classID = " + bookingiD);
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+    }
     
     public void checkLogins(int memberID, String password) {
         try {
@@ -130,4 +152,4 @@ public class DatabaseClass {
            System.exit(0);
        }   
     }
-}   
+}

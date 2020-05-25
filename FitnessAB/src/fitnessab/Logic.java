@@ -16,32 +16,35 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.Random;
 import org.sqlite.SQLiteConfig;
 
-        
 public class Logic {
     static Connection conn = null;
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
-    Scanner sc = new Scanner(System.in);
-    Random random = new Random();
+    private Scanner sc = new Scanner(System.in);
+    private Random random = new Random();
+    private String fName;
+    private String sName;
+    private int peronNr;
+    private String address; 
+    private String addressNr;
+    private String mail;
+    private int phoneNr; 
+    private String className;
+    private String stringDate;
+    private int date;
+    private int startTime;
+    private int stopTime;
+    private int memberIDRandom;
+    private int bookingID;
+    private int classID;
+    private int removeMember;
     double personNr;
-    String fName;
-    String sName;
-    String address; 
-    String addressNr;
-    String mail;
-    int phoneNr; 
-    String className;
-    int date;
-    int startTime;
-    int stopTime;
-    int memberIDRandom;
-    int bookingID;
-    int classID;
-    int removeMember;
     String password; 
     int memberID; 
     DatabaseClass db = new DatabaseClass();
@@ -73,10 +76,22 @@ public class Logic {
     
     public void removeMember(){
         System.out.println("Which Member would you like to remove?");
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select memberID, fName from Member");
+            while(rs.next()){
+                System.out.println("Name: " + rs.getString("fName"));
+                System.out.println("ID: " + rs.getInt("memberID"));
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
         System.out.println("Enter Member ID");
         removeMember = sc.nextInt();
         db.removeMember(removeMember);
-        
     }
     
     public boolean checkIn(int scannedCard){
@@ -84,22 +99,28 @@ public class Logic {
             return true; 
         return false;                     
     }
-        
-  
+
     public void createCourse(){
+        boolean format = false;
         randomClassID();
         System.out.println("Name of class?");
         className = sc.nextLine();
-        System.out.println("Enter which date the class will be held");
-        date = sc.nextInt();
-        System.out.println("Enter start time (Example 20 for 20.00)");
-        startTime = sc.nextInt();
-        System.out.println("Enter stop time (Example 21 for 21.00)");
-        stopTime = sc.nextInt();
+        System.out.println("Enter which date the class will be held (YYYYMMDD)");
+        stringDate = sc.nextLine();
+        while(!format){
+            if(stringDate.length() != 8){
+                System.out.println("Fel format, försök igen (YYYYMMDD)");
+                stringDate = sc.nextLine();
+            } else{
+                date = Integer.parseInt(stringDate);
+                format = true;
+            }
+        }
         db.createCourse(classID, className, date, startTime, stopTime);
-        
     }
+    
     public void bookCourse(){
+        getCourses();
         System.out.println("MemberID: ");
         int input = sc.nextInt();
         int memberID = 0;
@@ -109,7 +130,6 @@ public class Logic {
         sc.nextLine();
         System.out.println("Which class would you like to participate in?");
         className = sc.nextLine();
-        
         System.out.println("Which date?");
         date = sc.nextInt();
         try {
@@ -134,12 +154,32 @@ public class Logic {
     }
     
     public void cancelCourse(){
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select classID, date1, ClassName from Class");
+            while(rs.next()){
+                System.out.println("Class: " + rs.getString("ClassName"));
+                System.out.println("Date: " + rs.getInt("date1"));
+                System.out.println("ID: " + rs.getInt("classID"));
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
         System.out.println("Enter Class ID");
         classID = sc.nextInt();
-        System.out.println("Which date?");
-        date = sc.nextInt();
-        System.out.println("hehehehe");
-        
+        db.cancelCourse(classID);
+    }
+    
+    public void cancelBooking(){
+        System.out.println("Please enter memberID: ");
+        int ID = sc.nextInt();
+        viewBookings(ID);
+        System.out.println("Select booking to cancel via bookingID: ");
+        bookingID = sc.nextInt();
+        db.cancelBooking(ID, bookingID);
     }
     
     public int randomMemberID() {
@@ -155,7 +195,6 @@ public class Logic {
                 }
             }
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }
@@ -175,7 +214,6 @@ public class Logic {
                 }
             }
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }
@@ -195,14 +233,56 @@ public class Logic {
                 }
             }
        } catch (Exception e) {
-           // Om java-progammet inte lyckas koppla upp sig mot databasen (t ex om fel sÃ¶kvÃ¤g eller om driver inte hittas) sÃ¥ kommer ett felmeddelande skrivas ut
            System.out.println( e.toString() );
            System.exit(0);
        }
         return classID;
     }
+    
     public void viewdata(){
         db.viewall();
+    }
+    
+    public void getCourses(){
+        String pattern = "yyyyMMdd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select * from Class where date1 >= " + date);
+            while(rs.next()){
+                System.out.println("ClassName: " + rs.getString("ClassName"));
+                System.out.println("ClassDate: " + rs.getInt("date1"));
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+    }
+    
+    public void viewBookings(int ID){
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select fName, bookingID, date1 from Booking");
+            while(rs.next()){
+                if(rs.getString("memberID").equals(ID)){
+                    System.out.println("Name: " + rs.getString("fName"));
+                    System.out.println("BookingID: " + rs.getInt("bookingID"));
+                    System.out.println("Date: " + rs.getInt("date1"));
+                }
+                System.out.println("Name: " + rs.getString("fName"));
+                System.out.println("ID: " + rs.getInt("memberID"));
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
     }
     
     public void checkLogin(){
@@ -212,10 +292,5 @@ public class Logic {
         System.out.println("Password: ");
         password = sc.nextLine(); 
         db.checkLogins(memberID, password);
-        
-
-        
-        
-        
     }
 }

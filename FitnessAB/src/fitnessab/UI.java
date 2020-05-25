@@ -19,14 +19,16 @@ public class UI {
     Random randomID = new Random();
     public void UI(){
         while(!quit){
+
             System.out.println("1: Add Member\n" 
                     + "2: Log In\n"
                     + "3: Remove Member\n"
                     + "4: Create Class\n"
                     + "5: Reservation for Class\n"
                     + "6: Cancel reservation for Class\n"
-                    + "7: View All Members\n"
-                    + "8: Quit Program");
+                    + "7: Cancel class\n"
+                    + "8: View All Members\n"
+                    + "9: Quit Program");
             String input = scan.nextLine().trim();
             switch(input){
                 case "1":
@@ -50,15 +52,20 @@ public class UI {
                     break;
                     
                 case "6":
-                    logic.cancelCourse();
+                    logic.cancelBooking();
                     break;
                     
                 case "7":
-                    logic.viewdata();
+                    logic.cancelCourse();
                     break;
                     
                 case "8":
+                    logic.viewdata();
+                    break;
+                    
+                case "9":
                     quit = true;
+                    break;
                     
                 default:
                     System.out.println("Incorrect input");
