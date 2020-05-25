@@ -128,7 +128,6 @@ public class DatabaseClass {
         } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
-       }
-        
+       }   
     }
 }   
