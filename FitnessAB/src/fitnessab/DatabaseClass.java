@@ -15,6 +15,7 @@ import org.sqlite.SQLiteConfig;
  *
  * @author s_ski
  */
+
 public class DatabaseClass {
     static Connection conn = null;
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
