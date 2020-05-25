@@ -20,7 +20,18 @@ public class DatabaseClass {
     static Connection conn = null;
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
-    
+    /**
+     * 
+     * @param memberIDRandom
+     * @param personNr
+     * @param fName
+     * @param eName
+     * @param adress
+     * @param adressNr
+     * @param mail
+     * @param phoneNr
+     * @param password 
+     */
     public void addMember(int memberIDRandom, double personNr, String fName, String eName, String adress, String adressNr, String mail, int phoneNr, String password){
         try {
             Class.forName(DRIVER);

@@ -50,7 +50,10 @@ public class Logic {
     private int gymCardID;
     DatabaseClass db = new DatabaseClass();
     
-    public Logic() {}       
+    public Logic() {}    
+    /**
+     * 
+     */
     public void addMember(){
         memberIDRandom =  randomMemberID();
         System.out.println(memberIDRandom);
