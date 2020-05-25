@@ -28,8 +28,8 @@ public class UI {
                     + "6: Cancel reservation for Class\n"
                     + "7: Cancel class\n"
                     + "8: View All Members\n"
-                    + "9: Update member information"
-                    + "9: Quit Program");
+                    + "9: Update member information\n"
+                    + "10: Quit Program");
             String input = scan.nextLine().trim();
             switch(input){
                 case "1":

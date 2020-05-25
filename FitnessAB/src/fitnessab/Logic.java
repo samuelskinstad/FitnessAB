@@ -344,7 +344,10 @@ public class Logic {
             String phone = Integer.toString(phoneNr);
             db.updateMember(relation, phone, memberID);
         } else if (relation.equals("cancel")){
-            new UI().UI();
+            
+        } else{
+            System.out.println("Felaktig input");
+            
         }
     }
 }
