@@ -151,6 +151,24 @@ public class DatabaseClass {
            System.out.println( e.toString() );
            System.exit(0);
        }
-        
+    }
+    
+    public void updateMember(String relation, String info, int memberID){
+        try {
+            Class.forName(DRIVER);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            Statement stmt = conn.createStatement();
+            if(info.equals("phoneNr")){
+                int phone = Integer.parseInt(info);
+                stmt.executeUpdate("UPDATE Member SET = " + relation + phone + "WHERE memberID = " + memberID);
+            } else{
+                stmt.executeUpdate("UPDATE Member SET = " + relation + info + "WHERE memberID = " + memberID);
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
     }
 }

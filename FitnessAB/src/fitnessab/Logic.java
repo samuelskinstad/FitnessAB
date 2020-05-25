@@ -297,4 +297,52 @@ public class Logic {
         password = sc.nextLine(); 
         db.checkLogins(memberID, password);
     }
+    
+    public void updateMember(){
+        System.out.println("MemberID: ");
+        memberID = sc.nextInt();
+        
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select * from Member");
+            while(rs.next()){
+                if(rs.getString("memberID").equals(memberID)){
+                    System.out.println("Forename: " + rs.getString("fName"));
+                    System.out.println("Lastname: " + rs.getString("eName"));
+                    System.out.println("Adress: " + rs.getString("adress"));
+                    System.out.println("Adress number: " + rs.getString("adressNr"));
+                    System.out.println("Mail: " + rs.getString("mail"));
+                    System.out.println("Phone number: " + rs.getInt("phoneNr"));
+                    System.out.println("Password: " + rs.getString("password"));
+                }
+            }
+       } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+        System.out.println("Select information to update (eg: fName"
+                    + "1: fName: \n" 
+                    + "2: eName: \n"
+                    + "3: adress: \n"
+                    + "4: adressNr: \n"
+                    + "5: mail: \n"
+                    + "6: phoneNr: \n"
+                    + "7: password\n");
+        String relation = sc.nextLine();
+        if(relation.equals("fName") || relation.equals("eName")
+                || relation.equals("adress") || relation.equals("adressNr")
+                || relation.equals("mail") || relation.equals("password")){
+            System.out.println("New information: ");
+            String info = sc.nextLine();
+            db.updateMember(relation, info, memberID);
+        } else if(relation.equals("phoneNr")){
+            System.out.println("New phone number:");
+            phoneNr = sc.nextInt();
+            String phone = Integer.toString(phoneNr);
+            db.updateMember(relation, phone, memberID);
+        }
+        
+    }
 }
