@@ -53,23 +53,23 @@ public class DatabaseClass {
             Connection con = DriverManager.getConnection(DB_URL);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Member");
-//             while(rs.next()){
-//                 System.out.println("ID: " + rs.getInt("memberID") + ",");
-//                 System.out.println("Name: " + rs.getString("fName") + ",");
-//                 System.out.println("LastName: " + rs.getString("eName") + ",");
-//                 System.out.println("Address: " + rs.getString("adress") + ",");
-//                 System.out.println("AddressNr: " + rs.getString("adressNr") + ",");
-//                 System.out.println("Mail: " + rs.getString("mail") + ",");
-//                 System.out.println("phoneNr: " + rs.getInt("phoneNr"));
-//             }
-             ResultSet result = stmt.executeQuery("Select * from Class");
-             while(result.next()){
-                 System.out.println("ID: " + result.getInt("ClassID") + ",");
-                 System.out.println("date1: " + result.getInt("date1") + ",");
-                 System.out.println("startTime: " + result.getInt("startTime") + ",");
-                 System.out.println("stopTime " + result.getInt("stopTime") + ",");
-                 System.out.println("className: " + result.getString("ClassName"));
+             while(rs.next()){
+                 System.out.println("ID: " + rs.getInt("memberID") + ",");
+                 System.out.println("Name: " + rs.getString("fName") + ",");
+                 System.out.println("LastName: " + rs.getString("eName") + ",");
+                 System.out.println("Address: " + rs.getString("adress") + ",");
+                 System.out.println("AddressNr: " + rs.getString("adressNr") + ",");
+                 System.out.println("Mail: " + rs.getString("mail") + ",");
+                 System.out.println("phoneNr: " + rs.getInt("phoneNr"));
              }
+             ResultSet result = stmt.executeQuery("Select * from Class");
+//             while(result.next()){
+//                 System.out.println("ID: " + result.getInt("ClassID") + ",");
+//                 System.out.println("date1: " + result.getInt("date1") + ",");
+//                 System.out.println("startTime: " + result.getInt("startTime") + ",");
+//                 System.out.println("stopTime " + result.getInt("stopTime") + ",");
+//                 System.out.println("className: " + result.getString("ClassName"));
+//             }
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
@@ -139,7 +139,7 @@ public class DatabaseClass {
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("delete from Booking where memberID = " + memberID + "AND classID = " + bookingiD);
+            stmt.executeUpdate("delete from Booking where memberID = " + memberID + " AND bookingID = " + bookingiD);
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
@@ -147,22 +147,11 @@ public class DatabaseClass {
     }
     
     public void checkLogins(int memberID, String password) {
-        try {
-            Class.forName(DRIVER);
-            Connection con = DriverManager.getConnection(DB_URL);
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("Select MemberID, password from Member"); 
-            while(rs.next()){
-                if (rs.getInt("memberID") == memberID && rs.getString("password") == password) {
-                    System.out.println("Login Successfull");
-                } else {
-                    System.out.println("Invalid Login - Please Try Again");
-                }
-            }
-        } catch (Exception e) {
-           System.out.println( e.toString() );
-           System.exit(0);
-       }   
+        if(login(memberID, password)){
+            System.out.println("Login sucessfull");
+        } else{
+            System.out.println("Login error, try again");
+        }
     }
     
     public void checkIn(int gymID, int gymCardID, String date) {
@@ -184,15 +173,35 @@ public class DatabaseClass {
             config.enforceForeignKeys(true);
             conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
-            if(info.equals("phoneNr")){
-                int phone = Integer.parseInt(info);
-                stmt.executeUpdate("UPDATE Member SET = " + relation + phone + "WHERE memberID = " + memberID);
-            } else{
-                stmt.executeUpdate("UPDATE Member SET = " + relation + info + "WHERE memberID = " + memberID);
+            ResultSet rs = stmt.executeQuery("Select * from Member");
+            while(rs.next()){
+                if(relation.equals("phoneNr")){
+                    int phone = Integer.parseInt(info);
+                    stmt.executeUpdate("UPDATE Member SET " + relation + " = " + phone + " WHERE memberID = " + memberID);
+                } else{
+                    stmt.executeUpdate("UPDATE Member SET " + relation + " = '" + info + "' WHERE memberID = " + memberID);
+                }
             }
-       } catch (Exception e) {
+        } catch (Exception e) {
+            System.out.println( e.toString() );
+            System.exit(0);
+        }
+    }
+    private boolean login(int memberID, String password){
+        try {
+            Class.forName(DRIVER);
+            Connection con = DriverManager.getConnection(DB_URL);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("Select memberID, password from Member");
+            while(rs.next()){
+                if (rs.getInt("memberID") == memberID && rs.getString("password").equals(password)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
        }
+        return false;
     }
 }
