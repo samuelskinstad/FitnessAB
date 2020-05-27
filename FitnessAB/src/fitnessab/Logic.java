@@ -76,6 +76,7 @@ public class Logic {
         System.out.println("Enter your password");
         password = sc.nextLine();
         db.addMember(memberIDRandom, personNr,  fName, sName, address, addressNr, mail, phoneNr, password);
+        System.out.println("Member " + fName + " Created! Welcome to Fitness AB");
     }
     
     public void removeMember(){
@@ -105,7 +106,8 @@ public class Logic {
         String pattern = "yyyyMMdd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
-        db.checkIn(gymID, gymCardID, date);        
+        db.checkIn(gymID, gymCardID, date);
+        System.out.println("Check in approved");
     }
 
     public void createCourse(){
@@ -129,6 +131,7 @@ public class Logic {
         System.out.println("Enter stop time of class (for example: 21 for 21:00)");
         stopTime = sc.nextInt();
         db.createCourse(classID, className, date, startTime, stopTime);
+        System.out.println("Course: " + className + " created!");
     }
     
     public void bookCourse(){
@@ -191,6 +194,7 @@ public class Logic {
         System.out.println("Select booking to cancel via bookingID: ");
         bookingID = sc.nextInt();
         db.cancelBooking(memberID, bookingID);
+        System.out.println("Booking canceled");
     }
     
     public int randomMemberID() {
@@ -302,6 +306,7 @@ public class Logic {
         System.out.println("Password: ");
         password = sc.nextLine(); 
         db.checkLogins(memberID, password);
+        
     }
     
     public void updateMember(){
@@ -349,6 +354,6 @@ public class Logic {
             String phone = Integer.toString(phoneNr);
             db.updateMember(relation, phone, memberID);
         }
-        
+        System.out.println("Member information updated");
     }
 }
