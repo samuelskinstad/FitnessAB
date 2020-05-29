@@ -5,9 +5,11 @@
  */
 package fitnessab;
 
+import static fitnessab.Logic.conn;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import org.sqlite.SQLiteConfig;
 
@@ -17,41 +19,22 @@ import org.sqlite.SQLiteConfig;
  */
 
 public class DatabaseClass {
-    static Connection conn = null;
-    public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
-    public static final String DRIVER = "org.sqlite.JDBC";
-    /**
-     * 
-     * @param memberIDRandom
-     * @param personNr
-     * @param fName
-     * @param eName
-     * @param adress
-     * @param adressNr
-     * @param mail
-     * @param phoneNr
-     * @param password 
-     */
-    public void addMember(int memberIDRandom, double personNr, String fName, String eName, String adress, String adressNr, String mail, int phoneNr, String password){
+    public void addMember(int memberIDRandom, double personNr, String fName,
+            String eName, String adress, String adressNr, String mail, int phoneNr,
+            String password, Connection conn, SQLiteConfig config) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("insert into Member (memberID, personNr, fName, eName, adress, adressNr, mail, phoneNr, password) VALUES ('" + memberIDRandom + "','" + personNr + "','" +  fName + "','" +
                     eName + "','" + adress + "','" + adressNr + "','" + mail + "','" + phoneNr + "', '" + password + "' )");
-       } catch (Exception e) {
-           System.out.println( e.toString() );
-           System.exit(0);
-       }
+        } catch (Exception e) {
+            System.err.println(e.toString());
+            System.exit(0);
+        }
     }
     
-    public void viewall(){
+    public void viewall() throws SQLException{
          try {
-            Class.forName(DRIVER);
-            Connection con = DriverManager.getConnection(DB_URL);
-            Statement stmt = con.createStatement();
+            Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Member");
              while(rs.next()){
                  System.out.println("ID: " + rs.getInt("memberID") + ",");
@@ -62,7 +45,7 @@ public class DatabaseClass {
                  System.out.println("Mail: " + rs.getString("mail") + ",");
                  System.out.println("phoneNr: " + rs.getInt("phoneNr"));
              }
-             ResultSet result = stmt.executeQuery("Select * from Class");
+             //ResultSet result = stmt.executeQuery("Select * from Class");
 //             while(result.next()){
 //                 System.out.println("ID: " + result.getInt("ClassID") + ",");
 //                 System.out.println("date1: " + result.getInt("date1") + ",");
@@ -76,12 +59,8 @@ public class DatabaseClass {
        }
     }
     
-    public void removeMember(int memberID){
+    public void removeMember(int memberID, Connection conn, SQLiteConfig config) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("delete from Member where memberID = " + memberID);
        } catch (Exception e) {
@@ -90,54 +69,50 @@ public class DatabaseClass {
        }
     }
     
-    public void createCourse(int ID, String className, int date, int startTime, int stopTime){
+    public void createCourse(int ID, String className, int date, int startTime, int stopTime, int totalLimit, int gymID, Connection conn, SQLiteConfig config) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("insert into Class (classID, className, date1, startTime, stopTime) VALUES ('" + ID + "','" +
                     className + "','" + date + "','" +startTime + "','" + stopTime + "')");
+            stmt.executeUpdate("insert into ClassLimit (totalLimit, avalible, classID, gymID) VALUES ('" + totalLimit + "','" + totalLimit + "','"
+            + ID + "','" + gymID + "')");
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
        }
     }
-    
-    public void bookCourse(int bookingID, int memberID, int classID, String fName, int date){
+//    
+    public void bookCourse(int bookingID, int memberID, int classID, String fName, int date, int classLimit, Connection conn, SQLiteConfig config) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            Connection con = DriverManager.getConnection(DB_URL);
-            Statement stmt = con.createStatement();
+            Statement stmt = conn.createStatement();
+            conn.setAutoCommit(false);
             stmt.executeUpdate("insert into Booking (bookingID, memberiD, classID, fName, date1) VALUES ('" + bookingID + "','" + memberID + "','" +
             classID + "','" + fName + "','" + date + "')");
+            stmt.executeUpdate("UPDATE ClassLimit SET avalible = " + classLimit + " WHERE classiD = " + classID);
+            conn.commit();
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
        }
     }
-    
-    public void cancelCourse(int classID){
+//    
+    public void cancelCourse(int classID, int gymID, Connection conn, SQLiteConfig config) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            conn.setAutoCommit(false);
             Statement stmt = conn.createStatement();
+            stmt.executeUpdate("delete from classLimit where classID = " + classID);
             stmt.executeUpdate("delete from Class where classID = " + classID);
+            stmt.executeUpdate("delete from classLimit where gymID = " + gymID);
+            conn.commit();
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
        }
     }
-    
-    public void cancelBooking(int memberID, int bookingiD){
+//    
+    public void cancelBooking(int memberID, int bookingiD, Connection conn, SQLiteConfig config) throws SQLException{
+        //TODO add+1 to avilable
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("delete from Booking where memberID = " + memberID + " AND bookingID = " + bookingiD);
        } catch (Exception e) {
@@ -145,33 +120,33 @@ public class DatabaseClass {
            System.exit(0);
        }
     }
-    
-    public void checkLogins(int memberID, String password) {
+//    
+    public void checkLogins(int memberID, String password) throws SQLException {
         if(login(memberID, password)){
             System.out.println("Login sucessfull");
         } else{
             System.out.println("Login error, try again");
         }
     }
-    
-    public void checkIn(int gymID, int gymCardID, String date) {
+//    
+    public void checkIn(int gymID, int gymCardID, String date, Connection conn, SQLiteConfig config) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("Select * from Member");
+        if(checkCheckIn(gymCardID)){
+            System.out.println("Check In Approved");
+        } else{
+            System.out.println("Check in denied");
+        }
      try {
-            Class.forName(DRIVER);
-            Connection con = DriverManager.getConnection(DB_URL);
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("insert into CheckIn (GymID, memberiD, date2) VALUES ('" + gymID + "','" + gymCardID + "','" + date + "')");
+            stmt.executeUpdate("insert into CheckIn (GymID, memberID, date2) VALUES ('" + gymID + "','" + gymCardID + "','" + date + "')");
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
        }
     }
-    
-    public void updateMember(String relation, String info, int memberID){
+//    
+    public void updateMember(String relation, String info, int memberID, Connection conn, SQLiteConfig config) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Member");
             while(rs.next()){
@@ -187,14 +162,27 @@ public class DatabaseClass {
             System.exit(0);
         }
     }
-    private boolean login(int memberID, String password){
+    private boolean login(int memberID, String password) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            Connection con = DriverManager.getConnection(DB_URL);
-            Statement stmt = con.createStatement();
+            Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select memberID, password from Member");
             while(rs.next()){
                 if (rs.getInt("memberID") == memberID && rs.getString("password").equals(password)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+           System.out.println( e.toString() );
+           System.exit(0);
+       }
+        return false;
+    }
+    private boolean checkCheckIn(int gymCardID) throws SQLException{
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select memberID from Member");
+            while(rs.next()){
+                if (rs.getInt("memberID") == gymCardID) {
                     return true;
                 }
             }

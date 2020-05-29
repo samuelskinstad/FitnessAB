@@ -5,6 +5,7 @@
  */
 package fitnessab;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Random; 
 
@@ -17,7 +18,7 @@ public class UI {
     Logic logic = new Logic();
     boolean quit = false;
     Random randomID = new Random();
-    public void UI(){
+    public void UI() throws SQLException{
         while(!quit){
 
             System.out.println("1: Add Member\n" 

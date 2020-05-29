@@ -9,12 +9,10 @@ package fitnessab;
  *
  * @author s_ski
  */
-import static fitnessab.DatabaseClass.DB_URL;
-import static fitnessab.DatabaseClass.DRIVER;
-import static fitnessab.DatabaseClass.conn;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +22,8 @@ import org.sqlite.SQLiteConfig;
 
 public class Logic {
     static Connection conn = null;
+    SQLiteConfig config;
+    Statement stmt;
     public static final String DB_URL = "jdbc:sqlite:C:/test111.db";
     public static final String DRIVER = "org.sqlite.JDBC";
     private Scanner sc = new Scanner(System.in);
@@ -48,14 +48,27 @@ public class Logic {
     int memberID; 
     private int gymID;
     private int gymCardID;
+    private int classLimit;
+    private int currentLimit;
     DatabaseClass db = new DatabaseClass();
     
-    public Logic() {}    
+    public Logic() {
+    try{
+            Class.forName(DRIVER);
+            config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection(DB_URL,config.toProperties());
+            stmt = conn.createStatement();
+        } catch(Exception e){
+            System.out.println( e.toString() );
+            System.exit(0);
+        }
+    }
     /**
      * 
      */
-    public void addMember(){
-        memberIDRandom =  randomMemberID();
+    public void addMember() throws SQLException{
+        memberIDRandom = randomMemberID(conn, config);
         System.out.println(memberIDRandom);
         System.out.println("Enter Social Security Number - YYYYMMDDXXXX");
         personNr = sc.nextDouble();
@@ -75,16 +88,14 @@ public class Logic {
         sc.nextLine();
         System.out.println("Enter your password");
         password = sc.nextLine();
-        db.addMember(memberIDRandom, personNr,  fName, sName, address, addressNr, mail, phoneNr, password);
+        db.addMember(memberIDRandom, personNr,  fName, sName, address, addressNr, mail, phoneNr, password, conn, config);
         System.out.println("Member " + fName + " Created! Welcome to Fitness AB");
     }
     
-    public void removeMember(){
+    public void removeMember() throws SQLException{
         System.out.println("Which Member would you like to remove?");
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select memberID, fName from Member");
             while(rs.next()){
                 System.out.println("Name: " + rs.getString("fName"));
@@ -96,21 +107,20 @@ public class Logic {
        }
         System.out.println("Enter Member ID");
         removeMember = sc.nextInt();
-        db.removeMember(removeMember);
+        db.removeMember(removeMember, conn, config);
     }
-    
-    public void checkIn(){
+//    
+    public void checkIn() throws SQLException{
         gymID = 1; 
         System.out.println("Please scan your gym card");
         gymCardID = sc.nextInt();
         String pattern = "yyyyMMdd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
-        db.checkIn(gymID, gymCardID, date);
-        System.out.println("Check in approved");
+        db.checkIn(gymID, gymCardID, date, conn, config);
     }
-
-    public void createCourse(){
+//
+    public void createCourse() throws SQLException{
         boolean format = false;
         randomClassID();
         System.out.println("Name of class?");
@@ -130,25 +140,24 @@ public class Logic {
         startTime = sc.nextInt();
         System.out.println("Enter stop time of class (for example: 21 for 21:00)");
         stopTime = sc.nextInt();
-        db.createCourse(classID, className, date, startTime, stopTime);
+        System.out.println("Select number of participants: ");
+        classLimit = sc.nextInt();
+        System.out.println("Please enter gymID: ");
+        gymID = sc.nextInt();
+        db.createCourse(classID, className, date, startTime, stopTime, classLimit, gymID, conn, config);
         System.out.println("Course: " + className + " created!");
     }
-    
-    public void bookCourse(){
+//    
+    public void bookCourse() throws SQLException{
         getCourses();
         System.out.println("MemberID: ");
-        int input = sc.nextInt();
+        memberID = sc.nextInt();
         randomBookingNr();
-        sc.nextLine();
         System.out.println("Which class would you like to participate in? (classID)");
         classID = sc.nextInt();
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("Select memberID, fName from Member where memberID = " + input);
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select memberID, fName from Member where memberID = " + memberID);
             while(rs.next()){
                 memberID = rs.getInt("memberID");
                 fName = rs.getString("fName");
@@ -159,19 +168,24 @@ public class Logic {
                 classID = kurs.getInt("classID");
                 className = kurs.getString("className");
             }
-            db.bookCourse(bookingID, memberID, classID, fName, date);
-       } catch (Exception e) {
-           System.out.println( e.toString() );
-           System.exit(0);
-       }
+            ResultSet limit = stmt.executeQuery("Select avalible from classLimit where classID = " + classID);
+            classLimit = limit.getInt("avalible");
+            classLimit -= 1;
+            if(classLimit <= 0){
+                System.out.println("Course Full");
+            } else{
+                db.bookCourse(bookingID, memberID, classID, fName, date, classLimit, conn, config);
+            }
+        } catch (Exception e) {
+            System.out.println( e.toString() );
+            System.exit(0);
+        }
         System.out.println("Confirmation: Your reservation for class: " + className + " on " + date + " has been successfully registered");
     }
-    
-    public void cancelCourse(){
+//    
+    public void cancelCourse() throws SQLException{
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select classID, date1, ClassName from Class");
             while(rs.next()){
                 System.out.println("Class: " + rs.getString("ClassName"));
@@ -184,44 +198,43 @@ public class Logic {
        }
         System.out.println("Enter Class ID");
         classID = sc.nextInt();
-        db.cancelCourse(classID);
+        System.out.println("Enter gymID");
+        gymID = sc.nextInt();
+        db.cancelCourse(classID, gymID, conn, config);
+        System.out.println("Course canceled");
     }
-    
-    public void cancelBooking(){
+//    
+    public void cancelBooking() throws SQLException{
         System.out.println("Please enter memberID: ");
         memberID = sc.nextInt();
         viewBookings(memberID);
         System.out.println("Select booking to cancel via bookingID: ");
         bookingID = sc.nextInt();
-        db.cancelBooking(memberID, bookingID);
+        db.cancelBooking(memberID, bookingID, conn, config);
         System.out.println("Booking canceled");
     }
-    
-    public int randomMemberID() {
+//    
+    public int randomMemberID(Connection conn, SQLiteConfig config) throws SQLException {
         memberIDRandom = random.nextInt(1000000) + 1000000;
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select memberID from Member");
             while(rs.next()){
                 if(rs.getInt("memberID") == memberIDRandom){
-                    randomMemberID();
+                    randomMemberID(conn, config);
                 }
             }
-       } catch (Exception e) {
-           System.out.println( e.toString() );
-           System.exit(0);
-       }
+        } catch (Exception e) {
+            System.out.println( e.toString() );
+            System.exit(0);
+        }
         return memberIDRandom;
     }
-    
-    public int randomBookingNr(){
+//    
+    public int randomBookingNr() throws SQLException{
         bookingID = random.nextInt(2000000) + 2000000;
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select bookingID from Booking");
             while(rs.next()){
                 if(rs.getInt("bookingID") == bookingID){
@@ -234,13 +247,11 @@ public class Logic {
        }
         return bookingID;
     }
-    
-    public int randomClassID(){
+//    
+    public int randomClassID() throws SQLException{
         classID = random.nextInt(3000000) + 3000000;
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select classID from Class");
             while(rs.next()){
                 if(rs.getInt("classID") == classID){
@@ -253,38 +264,37 @@ public class Logic {
        }
         return classID;
     }
-    
-    public void viewdata(){
+//    
+    public void viewdata() throws SQLException{
         db.viewall();
     }
-    
-    public void getCourses(){
+//    
+    public void getCourses() throws SQLException{
         String pattern = "yyyyMMdd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
         try {
-            Class.forName(DRIVER);
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection(DB_URL,config.toProperties());
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Class where date1 >= " + date);
             while(rs.next()){
                 System.out.println("ClassID: " + rs.getInt("classID"));
                 System.out.println("ClassName: " + rs.getString("ClassName"));
                 System.out.println("ClassDate: " + rs.getInt("date1"));
             }
+            ResultSet limit = stmt.executeQuery("Select * from ClassLimit");
+            while(limit.next()){
+                System.out.println("Available: " + limit.getInt("avalible"));
+                classLimit = limit.getInt("avalible");
+            }
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
        }
     }
-    
-    public void viewBookings(int ID){
+//    
+    public void viewBookings(int ID) throws SQLException{
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select memberID, fName, bookingID, date1 from Booking");
             while(rs.next()){
                 if(rs.getInt("memberID") == ID){
@@ -298,25 +308,22 @@ public class Logic {
             System.exit(0);
         }
     }
-    
-    public void checkLogin(){
+//    
+    public void checkLogin() throws SQLException{
         System.out.println("User ID: ");
         memberID = sc.nextInt();
         sc.nextLine();
         System.out.println("Password: ");
         password = sc.nextLine(); 
         db.checkLogins(memberID, password);
-        
     }
-    
-    public void updateMember(){
+//    
+    public void updateMember() throws SQLException{
         System.out.println("MemberID: ");
         memberID = sc.nextInt();
         sc.nextLine();
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("Select * from Member");
             while(rs.next()){
                 if(rs.getInt("memberID") == memberID){
@@ -347,12 +354,12 @@ public class Logic {
                 || relation.equals("mail") || relation.equals("password")){
             System.out.println("New information: ");
             String info = sc.nextLine();
-            db.updateMember(relation, info, memberID);
+            db.updateMember(relation, info, memberID, conn, config);
         } else if(relation.equals("phoneNr")){
             System.out.println("New phone number:");
             phoneNr = sc.nextInt();
             String phone = Integer.toString(phoneNr);
-            db.updateMember(relation, phone, memberID);
+            db.updateMember(relation, phone, memberID, conn, config);
         }
         System.out.println("Member information updated");
     }
