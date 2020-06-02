@@ -114,7 +114,7 @@ public class DatabaseClass {
         //TODO add+1 to avilable
         try {
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("delete from Booking where memberID = " + memberID + " AND bookingID = " + bookingiD);
+            stmt.executeUpdate("delete from Booking where bookingID = " + bookingiD);
        } catch (Exception e) {
            System.out.println( e.toString() );
            System.exit(0);
